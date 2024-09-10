@@ -8,8 +8,11 @@ WORKDIR /app
 COPY pom.xml /app
 COPY src /app/src
 
+# Install Maven
+RUN apt-get update && apt-get install -y maven
+
 # Build the application
-RUN ./mvnw clean install
+RUN mvn clean install
 
 # Expose the port the application runs on
 EXPOSE 8080

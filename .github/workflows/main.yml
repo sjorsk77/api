@@ -3,10 +3,10 @@ name: Java CI with Maven and Docker Deploy
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
       run: mvn clean package
 
     - name: Build Docker image
-      run: docker build -t YOUR_DOCKER_IMAGE_NAME:latest .
+      run: docker build -t pantrypro:latest .
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
@@ -34,4 +34,4 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Push Docker image
-      run: docker push YOUR_DOCKER_IMAGE_NAME:latest
+      run: docker push pantrypro:latest

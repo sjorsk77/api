@@ -29,5 +29,5 @@ public class User extends Base {
     private boolean isDeleted;
 
     @Column(name="role", nullable = false)
-    private Roles role;
+    private Roles role = Roles.USER;
 }

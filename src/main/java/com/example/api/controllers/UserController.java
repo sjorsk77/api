@@ -1,6 +1,7 @@
 package com.example.api.controllers;
 
 import com.example.api.dtos.UserDto;
+import com.example.api.entities.User;
 import com.example.api.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,8 @@ public class UserController {
 
     //Get user by id
     @GetMapping("{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long userId) {
-        UserDto user = userService.getUserById(userId);
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long userId) {
+        User user = userService.getUserById(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

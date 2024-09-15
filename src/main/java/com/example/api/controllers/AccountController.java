@@ -1,14 +1,13 @@
 package com.example.api.controllers;
 
+import com.example.api.dtos.LoginDto;
+import com.example.api.dtos.LoginResponseDto;
 import com.example.api.dtos.RegisterDto;
 import com.example.api.entities.User;
-import com.example.api.exceptions.EmailAlreadyExistsException;
-import com.example.api.exceptions.PasswordMismatchException;
 import com.example.api.services.AccountService;
+import com.example.api.services.JwtService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
     private AccountService accountService;
-
-
+    private JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<?> getAccount(@Valid @RequestBody RegisterDto registerDto) {
@@ -29,7 +27,17 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public String login() {
-        return "Login";
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginDto loginDto) {
+
+        User user = accountService.authenticate(loginDto);
+        String token = jwtService.generateToken(user);
+
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
+        loginResponseDto.setToken(token);
+        loginResponseDto.setId(user.getId());
+        loginResponseDto.setExpiresAt(jwtService.ExtractExpiration(token));
+        loginResponseDto.setRole(user.getRole());
+
+        return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
     }
 }

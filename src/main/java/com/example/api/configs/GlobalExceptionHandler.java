@@ -2,6 +2,7 @@ package com.example.api.configs;
 
 import com.example.api.exceptions.EmailAlreadyExistsException;
 import com.example.api.exceptions.PasswordMismatchException;
+import com.example.api.exceptions.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -26,6 +27,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PasswordMismatchException.class)
     public ResponseEntity<String> handlePasswordMismatchException(PasswordMismatchException e) {
         return ResponseEntity.status(400).body(e.getMessage());
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
+        return ResponseEntity.status(404).body(e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

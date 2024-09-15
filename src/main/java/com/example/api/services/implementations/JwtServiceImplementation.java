@@ -37,6 +37,10 @@ public class JwtServiceImplementation implements JwtService {
         return buildToken(extraClaims, user, expiration);
     }
 
+    public String generateToken(User user) {
+        return buildToken(user, expiration);
+    }
+
     @Override
     public <T> T ExtractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
@@ -51,7 +55,10 @@ public class JwtServiceImplementation implements JwtService {
     @Override
     public boolean IsTokenValid(String token, User userDetails) {
         final String userId = ExtractUserId(token);
-        return (userId.equals(userDetails.getId().toString())) && !isTokenExpired(token);
+        boolean isTokenExpired = isTokenExpired(token);
+        String userid = userDetails.getId().toString();
+        boolean isUserIdEqual = userId.equals(userid);
+        return (isUserIdEqual && !isTokenExpired);
     }
 
     private Date extractExpiration(String token) {
@@ -71,6 +78,16 @@ public class JwtServiceImplementation implements JwtService {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
+                .setSubject(userDetails.getId().toString())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private String buildToken(User userDetails, long expiration) {
+        return Jwts
+                .builder()
                 .setSubject(userDetails.getId().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))

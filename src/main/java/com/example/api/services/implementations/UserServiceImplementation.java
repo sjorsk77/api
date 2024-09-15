@@ -7,14 +7,18 @@ import com.example.api.mappers.UserMapper;
 import com.example.api.repository.UserRepository;
 import com.example.api.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class UserServiceImplementation implements UserService {
+public class UserServiceImplementation implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -28,11 +32,11 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public UserDto getUserById(Long userId) {
+    public User getUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User not found with id: " + userId));
 
-        return UserMapper.toUserDto(user);
+        return user;
     }
 
     @Override
@@ -47,7 +51,7 @@ public class UserServiceImplementation implements UserService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User not found with id: " + userId));
 
-        user.setUserName(updatedUser.getUserName());
+        user.setName(updatedUser.getUserName());
         user.setEmail(updatedUser.getEmail());
         user.setRole(updatedUser.getRole());
         user.setPassword(updatedUser.getPassword());
@@ -63,5 +67,12 @@ public class UserServiceImplementation implements UserService {
                 () -> new ResourceNotFoundException("User not found with id: " + userId));
 
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        return user;
     }
 }

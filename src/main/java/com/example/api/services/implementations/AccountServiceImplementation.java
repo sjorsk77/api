@@ -1,8 +1,7 @@
 package com.example.api.services.implementations;
 
-import com.example.api.dtos.LoginDto;
-import com.example.api.dtos.LoginResponseDto;
-import com.example.api.dtos.RegisterDto;
+import com.example.api.dtos.AccountDtos.LoginDto;
+import com.example.api.dtos.AccountDtos.RegisterDto;
 import com.example.api.entities.User;
 import com.example.api.exceptions.EmailAlreadyExistsException;
 import com.example.api.exceptions.PasswordMismatchException;
@@ -10,8 +9,6 @@ import com.example.api.exceptions.ResourceNotFoundException;
 import com.example.api.repository.UserRepository;
 import com.example.api.services.AccountService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +35,8 @@ public class AccountServiceImplementation implements AccountService {
         String hashedPassword = passwordEncoder.encode(registerDto.getPassword());
 
         User user = new User();
-        user.setName(registerDto.getUserName());
+        user.setFirstName(registerDto.getFirstName());
+        user.setLastName(registerDto.getLastName());
         user.setEmail(registerDto.getEmail());
         user.setPassword(hashedPassword);
 

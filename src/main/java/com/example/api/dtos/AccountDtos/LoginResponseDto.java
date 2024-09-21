@@ -1,4 +1,4 @@
-package com.example.api.dtos;
+package com.example.api.dtos.AccountDtos;
 
 import com.example.api.Enums.Roles;
 import lombok.AllArgsConstructor;
@@ -12,14 +12,9 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class LoginResponseDto {
+    private String token;
     private Long id;
-    private String userName;
-    private String email;
-    private String password;
-    private Date createdAt;
-    private Date updatedAt;
-    private boolean isActive;
-    private boolean isDeleted;
     private Roles role;
+    private Date expiresAt;
 }

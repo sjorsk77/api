@@ -1,6 +1,6 @@
 package com.example.api.services.implementations;
 
-import com.example.api.dtos.UserDto;
+import com.example.api.dtos.EntityDtos.UserDto;
 import com.example.api.entities.User;
 import com.example.api.exceptions.ResourceNotFoundException;
 import com.example.api.mappers.UserMapper;
@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -23,12 +22,10 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     private final UserRepository userRepository;
 
     @Override
-    public UserDto createUser(UserDto userDto) {
-        User user = UserMapper.toUser(userDto);
+    public User createUser(UserDto userDto) {
+        User user = UserMapper.toEntity(userDto);
 
-        User savedUser = userRepository.save(user);
-
-        return UserMapper.toUserDto(savedUser);
+        return userRepository.save(user);
     }
 
     @Override
@@ -43,7 +40,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
 
-        return users.stream().map((user) -> UserMapper.toUserDto(user)).collect(Collectors.toList());
+        return users.stream().map((user) -> UserMapper.toDto(user)).collect(Collectors.toList());
     }
 
     @Override
@@ -51,14 +48,15 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User not found with id: " + userId));
 
-        user.setName(updatedUser.getUserName());
+        user.setFirstName(updatedUser.getFirstName());
+        user.setLastName(updatedUser.getLastName());
         user.setEmail(updatedUser.getEmail());
         user.setRole(updatedUser.getRole());
         user.setPassword(updatedUser.getPassword());
 
         User updatedUserObj = userRepository.save(user);
 
-        return UserMapper.toUserDto(updatedUserObj);
+        return UserMapper.toDto(updatedUserObj);
     }
 
     @Override

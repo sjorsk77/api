@@ -1,6 +1,6 @@
 package com.example.api.controllers;
 
-import com.example.api.dtos.UserDto;
+import com.example.api.dtos.EntityDtos.UserDto;
 import com.example.api.entities.User;
 import com.example.api.services.UserService;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package com.example.api.controllers;
 
-import com.example.api.dtos.LoginDto;
-import com.example.api.dtos.LoginResponseDto;
-import com.example.api.dtos.RegisterDto;
+import com.example.api.dtos.AccountDtos.LoginDto;
+import com.example.api.dtos.AccountDtos.LoginResponseDto;
+import com.example.api.dtos.AccountDtos.RegisterDto;
 import com.example.api.entities.User;
 import com.example.api.services.AccountService;
 import com.example.api.services.JwtService;

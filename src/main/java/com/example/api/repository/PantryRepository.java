@@ -1,13 +1,12 @@
 package com.example.api.repository;
 
+import com.example.api.entities.Pantry;
 import com.example.api.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
-    boolean existsByEmail(String email);
+public interface PantryRepository extends JpaRepository<Pantry, Long> {
 }

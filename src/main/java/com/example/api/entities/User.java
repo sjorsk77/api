@@ -19,8 +19,11 @@ import java.util.List;
 @Table(name = "users")
 public class User extends Base implements UserDetails {
 
-    @Column(name = "user_name", nullable = false)
-    private String name;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -34,8 +37,12 @@ public class User extends Base implements UserDetails {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="role", nullable = false)
     private Roles role = Roles.USER;
+
+    @OneToMany(mappedBy = "invitee")
+    private List<PantryInvitation> pantryInvitations;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

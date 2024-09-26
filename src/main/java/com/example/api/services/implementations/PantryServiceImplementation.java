@@ -10,8 +10,10 @@ import com.example.api.mappers.PantryMapper;
 import com.example.api.repository.PantryInvitationRepository;
 import com.example.api.repository.PantryRepository;
 import com.example.api.repository.UserRepository;
+import com.example.api.services.JwtService;
 import com.example.api.services.PantryService;
 import lombok.AllArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class PantryServiceImplementation implements PantryService {
     private final PantryRepository pantryRepository;
     private final PantryInvitationRepository pantryInvitationRepository;
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Override
     public Pantry createPantry(CreatePantryDto pantryDto) {
@@ -36,7 +39,9 @@ public class PantryServiceImplementation implements PantryService {
         Pantry newPantry = PantryMapper.toEntity(newPantryDto);
         Pantry savedPantry = pantryRepository.save(newPantry);
 
-        User user = userRepository.findById(pantryDto.getUserId()).get();
+        Long userId = Long.parseLong(jwtService.ExtractUserId(pantryDto.getToken()));
+
+        User user = userRepository.findById(userId).get();
 
         SendSelfInvitation(user, savedPantry);
 
@@ -49,6 +54,11 @@ public class PantryServiceImplementation implements PantryService {
 
         if(pantries != null) { return pantries.stream().map(PantryMapper::toDto).collect(Collectors.toList());}
         return null;
+    }
+
+    @Override
+    public void deletePantry(Long pantryId) {
+        pantryRepository.deleteById(pantryId);
     }
 
     private void SendSelfInvitation(User user, Pantry pantry) {

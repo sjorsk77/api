@@ -8,6 +8,7 @@ import com.example.api.exceptions.PasswordMismatchException;
 import com.example.api.exceptions.ResourceNotFoundException;
 import com.example.api.repository.UserRepository;
 import com.example.api.services.AccountService;
+import com.example.api.services.Internal.EmailService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,9 @@ import java.util.Optional;
 @Service
 public class AccountServiceImplementation implements AccountService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Override
     public User register(RegisterDto registerDto) {
@@ -40,20 +42,34 @@ public class AccountServiceImplementation implements AccountService {
         user.setEmail(registerDto.getEmail());
         user.setPassword(hashedPassword);
 
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        emailService.sendVerificationEmail(user.getEmail(), user.getId());
+
+        return user;
     }
 
     @Override
     public User authenticate(LoginDto loginDto) {
         Optional<User> user = userRepository.findByEmail(loginDto.getEmail());
 
-        if(user.isEmpty()) {
-            throw new ResourceNotFoundException("User not found");
-        }
-        if(!passwordEncoder.matches(loginDto.getPassword(), user.get().getPassword())) {
-            throw new PasswordMismatchException("Password is incorrect");
-        }
+        if(user.isEmpty()) throw new ResourceNotFoundException("User not found");
+
+        if(!passwordEncoder.matches(loginDto.getPassword(), user.get().getPassword())) throw new PasswordMismatchException("Password is incorrect");
+
+        if(!user.get().isActive()) throw new ResourceNotFoundException("User is not active");
 
         return user.get();
+    }
+
+    @Override
+    public void verifyAccount(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isEmpty()) throw new ResourceNotFoundException("User not found");
+
+        user.get().setActive(true);
+
+        userRepository.save(user.get());
     }
 }

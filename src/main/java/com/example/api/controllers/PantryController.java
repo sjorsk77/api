@@ -5,6 +5,7 @@ import com.example.api.dtos.AccountDtos.RegisterDto;
 import com.example.api.dtos.PantryDtos.CreatePantryDto;
 import com.example.api.dtos.PantryDtos.PantryInvitationDto;
 import com.example.api.entities.Pantry;
+import com.example.api.services.JwtService;
 import com.example.api.services.PantryInvitationService;
 import com.example.api.services.PantryService;
 import jakarta.validation.Valid;
@@ -21,9 +22,12 @@ public class PantryController {
 
     private final PantryService pantryService;
     private final PantryInvitationService pantryInvitationService;
+    private final JwtService jwtService;
 
-    @GetMapping("{id}")
-    public ResponseEntity<List<PantryDto>> getPantry(@PathVariable("id") Long userId) {
+    @GetMapping("{token}")
+    public ResponseEntity<List<PantryDto>> getPantry(@PathVariable("token") String token) {
+
+        Long userId = Long.parseLong(jwtService.ExtractUserId(token));
         return ResponseEntity.ok(pantryService.getPantry(userId));
     }
 
@@ -42,6 +46,12 @@ public class PantryController {
         }
 
         return ResponseEntity.ok("Invitation sent successfully");
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deletePantry(@PathVariable("id") Long id) {
+        pantryService.deletePantry(id);
+        return ResponseEntity.ok("Pantry deleted successfully");
     }
 
 

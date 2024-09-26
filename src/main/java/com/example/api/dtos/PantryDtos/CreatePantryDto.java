@@ -16,8 +16,8 @@ public class CreatePantryDto {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @NotNull(message = "userId is required")
-    private Long userId;
+    @NotBlank(message = "token is required")
+    private String token;
 
     @NotNull(message = "storageType is required")
     private StorageTypes storageType;

@@ -9,4 +9,5 @@ import java.util.List;
 public interface PantryService {
     Pantry createPantry(CreatePantryDto pantryDto);
     List<PantryDto> getPantry(Long userId);
+    void deletePantry(Long pantryId);
 }

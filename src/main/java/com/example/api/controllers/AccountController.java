@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/account")
 public class AccountController {
 
-    private AccountService accountService;
-    private JwtService jwtService;
+    private final AccountService accountService;
+    private final JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<?> getAccount(@Valid @RequestBody RegisterDto registerDto) {
@@ -32,12 +32,14 @@ public class AccountController {
         User user = accountService.authenticate(loginDto);
         String token = jwtService.generateToken(user);
 
-        LoginResponseDto loginResponseDto = new LoginResponseDto();
-        loginResponseDto.setToken(token);
-        loginResponseDto.setId(user.getId());
-        loginResponseDto.setExpiresAt(jwtService.ExtractExpiration(token));
-        loginResponseDto.setRole(user.getRole());
+        LoginResponseDto loginResponseDto = new LoginResponseDto(token, user.getId(), user.getRole(), jwtService.ExtractExpiration(token) );
 
         return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/verify/{id}")
+    public ResponseEntity<?> verifyAccount(@PathVariable("id") Long userId) {
+        accountService.verifyAccount(userId);
+        return ResponseEntity.ok("Account verified successfully");
     }
 }

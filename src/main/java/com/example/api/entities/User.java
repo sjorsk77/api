@@ -31,6 +31,9 @@ public class User extends Base implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "riskDays", nullable = false)
+    private int riskDays = 3;
+
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 

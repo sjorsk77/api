@@ -3,6 +3,7 @@ package com.example.api.services.implementations;
 import com.example.api.Enums.InvitationStatus;
 import com.example.api.dtos.EntityDtos.PantryDto;
 import com.example.api.dtos.PantryDtos.CreatePantryDto;
+import com.example.api.dtos.PantryDtos.UpdatePantryDto;
 import com.example.api.entities.Pantry;
 import com.example.api.entities.PantryInvitation;
 import com.example.api.entities.User;
@@ -59,6 +60,24 @@ public class PantryServiceImplementation implements PantryService {
     @Override
     public void deletePantry(Long pantryId) {
         pantryRepository.deleteById(pantryId);
+    }
+
+    @Override
+    public PantryDto updatePantry(Long id, UpdatePantryDto pantryDto) {
+        Pantry pantry = pantryRepository.findById(id).get();
+
+        pantry.setName(pantryDto.getName());
+        pantry.setStorageType(pantryDto.getStorageType());
+
+        Pantry updatedPantry = pantryRepository.save(pantry);
+
+        return PantryMapper.toDto(updatedPantry);
+    }
+
+    @Override
+    public PantryDto getPantryById(Long id) {
+        Pantry pantry = pantryRepository.findById(id).get();
+        return PantryMapper.toDto(pantry);
     }
 
     private void SendSelfInvitation(User user, Pantry pantry) {

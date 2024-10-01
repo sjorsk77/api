@@ -17,6 +17,7 @@ public class UserMapper {
                 setActive(user.isActive());
                 setDeleted(user.isDeleted());
                 setRole(user.getRole());
+                setRiskDays(user.getRiskDays());
             }
         };
     }
@@ -33,6 +34,7 @@ public class UserMapper {
         user.setActive(userDto.isActive());
         user.setDeleted(userDto.isDeleted());
         user.setRole(userDto.getRole());
+        user.setRiskDays(userDto.getRiskDays());
         return user;
     }
 }

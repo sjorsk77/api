@@ -19,6 +19,7 @@ public class UserDto {
     private String email;
     private String password;
     private Roles role;
+    private int riskDays;
     private boolean isActive;
     private boolean isDeleted;
     private Date createdAt;

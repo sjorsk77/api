@@ -21,4 +21,7 @@ public class Pantry extends Base {
 
     @OneToMany(mappedBy = "pantry", cascade = CascadeType.ALL)
     private List<PantryInvitation> invitations;
+
+    @OneToMany(mappedBy = "pantry", cascade = CascadeType.ALL)
+    private List<Food> foodItems;
 }

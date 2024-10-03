@@ -22,8 +22,8 @@ public class CreateFoodDto {
     @NotNull(message = "name is required")
     private String name;
 
-    @NotNull(message = "weight is required")
-    private float weight;
+    @NotNull(message = "quantity is required")
+    private float quantity;
 
     private Date expiryDate;
 }

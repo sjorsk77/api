@@ -16,6 +16,6 @@ public class FoodDto {
     private PantryDto pantry;
     private String eanCode;
     private String name;
-    private float weight;
+    private float quantity;
     private Date expiryDate;
 }

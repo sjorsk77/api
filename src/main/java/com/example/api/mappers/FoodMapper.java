@@ -10,7 +10,7 @@ public class FoodMapper {
         food.setPantry(pantry);
         food.setEanCode(foodDto.getEanCode());
         food.setName(foodDto.getName());
-        food.setWeight(foodDto.getWeight());
+        food.setQuantity(foodDto.getQuantity());
         food.setExpiryDate(foodDto.getExpiryDate());
         return food;
     }
@@ -21,7 +21,7 @@ public class FoodMapper {
         FoodDto.setId(food.getId());
         FoodDto.setEanCode(food.getEanCode());
         FoodDto.setName(food.getName());
-        FoodDto.setWeight(food.getWeight());
+        FoodDto.setQuantity(food.getQuantity());
         FoodDto.setExpiryDate(food.getExpiryDate());
         return FoodDto;
     }

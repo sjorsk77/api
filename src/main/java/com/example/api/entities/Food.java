@@ -21,8 +21,8 @@ public class Food extends Base {
     @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(name = "weight")
-    private Float weight;
+    @Column(name = "quantity")
+    private Float quantity;
 
     @Column(name = "expiry_date")
     private Date expiryDate;

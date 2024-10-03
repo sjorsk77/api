@@ -40,7 +40,7 @@ public class FoodServiceImplementation implements FoodService {
         FoodDto newFoodDto = new FoodDto();
         newFoodDto.setEanCode(food.getEanCode());
         newFoodDto.setName(food.getName());
-        newFoodDto.setWeight(food.getWeight());
+        newFoodDto.setQuantity(food.getQuantity());
         newFoodDto.setExpiryDate(food.getExpiryDate());
 
         Food newFood = FoodMapper.toEntity(newFoodDto, pantry);

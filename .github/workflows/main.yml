@@ -1,4 +1,4 @@
-name: Java CI with Maven and Docker Deploy
+name: CI/CD pipeline
 
 on:
   push:
@@ -25,6 +25,13 @@ jobs:
     - name: Build with Maven
       run: mvn clean package --no-transfer-progress
 
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@v2
+      with:
+        projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
+        organization: ${{ secrets.SONAR_ORG }}
+        token: ${{ secrets.SONAR_TOKEN }}    
+
     - name: Build Docker image
       run: docker build -t ${{ secrets.DOCKER_USERNAME }}/pantrypro:latest .
 
@@ -36,3 +43,22 @@ jobs:
 
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/pantrypro:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}               # Oracle Cloud Server IP
+          username: ${{ secrets.SSH_USER }}           # SSH Username
+          password: ${{ secrets.SSH_PASSWORD }}       # SSH Password or private key
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/pantrypro:latest
+            docker stop pantrypro || true
+            docker run -d --name pantrypro -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/pantrypro:latest

@@ -57,7 +57,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}               # Oracle Cloud Server IP
           username: ${{ secrets.SSH_USER }}           # SSH Username
-          password: ${{ secrets.SSH_PASSWORD }}       # SSH Password or private key
+          password: ${{ secrets.SSH_PASSWORD }}       # SSH Password or private ke
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/pantrypro:latest
             docker stop pantrypro || true

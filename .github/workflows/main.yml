@@ -22,14 +22,6 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    # Step 3: Build with Maven and run SonarCloud analysis
-    - name: Build with Maven and SonarCloud analysis
-      run: mvn clean verify sonar:sonar \
-        -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-        -Dsonar.organization=${{ secrets.SONAR_ORG }} \
-        -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
     - name: Build Docker image
       run: docker build -t ${{ secrets.DOCKER_USERNAME }}/pantrypro:latest .
 

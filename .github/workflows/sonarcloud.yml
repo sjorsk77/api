@@ -51,6 +51,9 @@ jobs:
       - name: Set permissions for SonarCloud scanner
         run: chmod +x ./.sonar/scanner/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
 
+      - name: Check available shells
+        run: cat /etc/shells
+
       - name: Build and analyze with SonarCloud
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,7 +63,7 @@ jobs:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}  # Set JAVA_HOME
           PATH: ${{ steps.setup-java.outputs.java-home }}:$(echo $PATH)  # Update PATH
         run: |
-          bash ./.sonar/scanner/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+          /bin/bash ./.sonar/scanner/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
             -Dsonar.projectKey="${{ secrets.SONAR_PROJECT_KEY }}" \
             -Dsonar.organization="${{ secrets.SONAR_ORG }}" \
             -Dsonar.host.url="https://sonarcloud.io" \

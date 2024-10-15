@@ -12,13 +12,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatePantryDto {
+public class UpdatePantryDto {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "token is required")
-    private String token;
-
-    @NotNull(message = "storageType is required")
+    @NotNull(message = "token is required")
     private StorageTypes storageType;
 }

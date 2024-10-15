@@ -1,6 +1,5 @@
-package com.example.api.dtos.PantryDtos;
+package com.example.api.dtos.FoodDtos;
 
-import com.example.api.Enums.StorageTypes;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,13 +11,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatePantryDto {
-    @NotBlank(message = "Name is required")
-    private String name;
-
+public class GetRiskFoodDto {
     @NotBlank(message = "token is required")
     private String token;
 
-    @NotNull(message = "storageType is required")
-    private StorageTypes storageType;
+    @NotNull(message = "Days to is required")
+    private int daysTo;
 }

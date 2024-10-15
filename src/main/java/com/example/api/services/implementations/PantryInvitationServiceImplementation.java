@@ -19,9 +19,9 @@ import static java.util.Arrays.stream;
 @Service
 public class PantryInvitationServiceImplementation implements PantryInvitationService {
 
-    UserRepository userRepository;
-    PantryInvitationRepository pantryInvitationRepository;
-    PantryRepository pantryRepository;
+    private final UserRepository userRepository;
+    private final PantryInvitationRepository pantryInvitationRepository;
+    private final PantryRepository pantryRepository;
 
     @Override
     public void sendInvitation(PantryInvitationDto pantryInvitationDto) {

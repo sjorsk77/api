@@ -7,4 +7,5 @@ import com.example.api.entities.User;
 public interface AccountService {
     User register(RegisterDto signUpDto);
     User authenticate(LoginDto loginDto);
+    void verifyAccount(Long userId);
 }

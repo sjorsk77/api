@@ -21,9 +21,13 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
 
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetch full history for proper analysis
+
+      - name: Install core utilities
+        run: sudo apt-get update && sudo apt-get install -y coreutils
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
@@ -50,9 +54,6 @@ jobs:
 
       - name: Set permissions for SonarCloud scanner
         run: chmod +x ./.sonar/scanner/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
-
-      - name: Check available shells
-        run: cat /etc/shells
 
       - name: Build and analyze with SonarCloud
         env:

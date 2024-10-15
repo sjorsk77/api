@@ -1,10 +1,10 @@
-name: SonarCloud #name of program
+name: SonarCloud
+
 on:
   push:
     branches:
-      - master
+      - main
       - develop
-      
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -47,14 +47,19 @@ jobs:
           curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
           unzip sonar-scanner-cli.zip -d ./.sonar/scanner
 
+      - name: Set permissions for SonarCloud scanner
+        run: chmod +x ./.sonar/scanner/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
+
       - name: Build and analyze with SonarCloud
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+          SONAR_ORG: ${{ secrets.SONAR_ORG }}
         run: |
-          ./sonar-scanner/bin/sonar-scanner \
-            -Dsonar.projectKey="S3-mediaan-SCA_SCA-Server" \
-            -Dsonar.organization="s3-mediaan-sca" \
+          ./.sonar/scanner/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+            -Dsonar.projectKey="${{ secrets.SONAR_PROJECT_KEY }}" \
+            -Dsonar.organization="${{ secrets.SONAR_ORG }}" \
             -Dsonar.host.url="https://sonarcloud.io" \
             -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
 

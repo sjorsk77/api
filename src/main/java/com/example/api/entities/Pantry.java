@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,8 +21,8 @@ public class Pantry extends Base {
     private StorageTypes storageType;
 
     @OneToMany(mappedBy = "pantry", cascade = CascadeType.ALL)
-    private List<PantryInvitation> invitations;
-
-    @OneToMany(mappedBy = "pantry", cascade = CascadeType.ALL)
     private List<Food> foodItems;
+
+    @OneToMany(mappedBy = "pantry")
+    private List<PantryInvitation> invitations = new ArrayList<>();
 }

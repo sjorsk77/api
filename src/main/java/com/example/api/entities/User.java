@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,8 +45,15 @@ public class User extends Base implements UserDetails {
     @Column(name="role", nullable = false)
     private Roles role = Roles.USER;
 
+
+    @OneToMany(mappedBy = "inviter")
+    private List<PantryInvitation> sentInvitations = new ArrayList<>();
+
     @OneToMany(mappedBy = "invitee")
-    private List<PantryInvitation> pantryInvitations;
+    private List<PantryInvitation> receivedInvitations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Diet> diets = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

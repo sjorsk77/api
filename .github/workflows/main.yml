@@ -80,6 +80,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}  # Your server username
           key: ${{ secrets.SSH_PRIVATE_KEY }}  # Your SSH private key
           script: |
+
+            echo "Connecting to server..."
+            echo "Current date and time: $(date)"
+            echo "Connected to: $(hostname)"
+            
             # Pull the latest Docker image
             docker pull ${{ secrets.DOCKER_USERNAME }}/pantrypro:latest
             

@@ -10,9 +10,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
+
 import org.springframework.core.io.ClassPathResource;
 
 
@@ -39,8 +45,10 @@ public class EmailService {
     private String loadHtmlTemplate(String htmlpath) {
         try {
             ClassPathResource resource = new ClassPathResource(htmlpath);
-            Path path = resource.getFile().toPath();
-            return new String(Files.readAllBytes(path));
+            InputStream inputStream = resource.getInputStream();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+                return reader.lines().collect(Collectors.joining(System.lineSeparator()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return null;

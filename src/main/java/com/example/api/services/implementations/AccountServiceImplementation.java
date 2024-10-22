@@ -57,7 +57,7 @@ public class AccountServiceImplementation implements AccountService {
 
         if(!passwordEncoder.matches(loginDto.getPassword(), user.get().getPassword())) throw new PasswordMismatchException("Password is incorrect");
 
-        if(!user.get().isActive()) throw new ResourceNotFoundException("User is not active");
+        if(!user.get().isActive()) throw new ResourceNotFoundException("User is not active, please verify your account via email");
 
         return user.get();
     }

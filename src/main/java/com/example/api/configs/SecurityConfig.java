@@ -14,6 +14,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -46,8 +47,14 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+
+        List<String> allowedOrigins = Arrays.asList(
+                "http://193.123.63.177",
+                "http://localhost:3000"
+        );
+
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://193.123.63.177");
+        configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.addAllowedHeader("*");  // Allow all headers
         configuration.setAllowCredentials(true);  // Allow credentials (e.g., cookies)

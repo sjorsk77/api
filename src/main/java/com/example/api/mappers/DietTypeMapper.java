@@ -7,4 +7,11 @@ public class DietTypeMapper {
     public static DietTypeDto mapDietTypeToDto(DietType dietType) {
         return new DietTypeDto(dietType.getId(), dietType.getName());
     }
+
+    public static DietType mapDtoToDietType(DietTypeDto dietTypeDto) {
+        DietType dietType = new DietType();
+        dietType.setId(dietTypeDto.getId());
+        dietType.setName(dietTypeDto.getName());
+        return dietType;
+    }
 }

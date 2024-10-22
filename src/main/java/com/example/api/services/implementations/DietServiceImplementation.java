@@ -1,6 +1,7 @@
 package com.example.api.services.implementations;
 
 import com.example.api.dtos.DietDtos.CreateDietRequest;
+import com.example.api.dtos.DietDtos.UpdateDietDto;
 import com.example.api.dtos.EntityDtos.DietDto;
 import com.example.api.dtos.EntityDtos.DietTypeDto;
 import com.example.api.entities.Diet;
@@ -29,14 +30,7 @@ public class DietServiceImplementation implements DietService {
 
 
     @Override
-    public DietDto addDiet(CreateDietRequest dietReq) {
-
-        User user = userRepository.findById(dietReq.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        List<DietType> dietTypes = dietTypeRepository.findAllById(dietReq.getDietTypes());
-
-        Diet diet = DietMapper.mapRequestToDiet(user, dietReq, dietTypes);
-
+    public DietDto addDiet(Diet diet) {
         dietRepository.save(diet);
 
         return DietMapper.mapDietToDto(diet);
@@ -53,13 +47,15 @@ public class DietServiceImplementation implements DietService {
     }
 
     @Override
-    public Diet updateDiet(Long dietId, Diet diet) {
+    public Diet UpdateDiet(Diet diet) {
+        Diet dietToUpdate = dietRepository.findById(diet.getId()).orElseThrow(() -> new ResourceNotFoundException("Diet not found"));
 
-        Diet dietToUpdate = dietRepository.findById(dietId).orElseThrow(() -> new ResourceNotFoundException("Diet not found"));
+        try {
+            return dietRepository.save(diet);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Diet not found");
+        }
 
-        diet = UpdateDiet(dietToUpdate, diet);
-
-        return dietRepository.save(diet);
     }
 
     @Override

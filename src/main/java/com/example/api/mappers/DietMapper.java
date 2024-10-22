@@ -1,6 +1,7 @@
 package com.example.api.mappers;
 
 import com.example.api.dtos.DietDtos.CreateDietRequest;
+import com.example.api.dtos.DietDtos.UpdateDietDto;
 import com.example.api.dtos.EntityDtos.DietDto;
 import com.example.api.entities.Diet;
 import com.example.api.entities.DietType;
@@ -10,17 +11,28 @@ import java.util.List;
 
 public class DietMapper {
 
-    public static Diet mapRequestToDiet(User user, CreateDietRequest dietDto, List<DietType> dietTypes) {
+    public static Diet mapRequestToDiet(User user, CreateDietRequest dietDto) {
         Diet diet = new Diet();
         diet.setUser(user);
         diet.setName(dietDto.getName());
         diet.setMinCalories(dietDto.getMinCalories());
         diet.setMaxCalories(dietDto.getMaxCalories());
-        diet.setDietTypes(dietTypes);
+        diet.setDietTypes(dietDto.getDietTypes().stream().map(DietTypeMapper::mapDtoToDietType).toList());
         return diet;
     }
 
     public static DietDto mapDietToDto(Diet diet) {
         return new DietDto(diet.getId(), diet.getName(), diet.getMinCalories(), diet.getMaxCalories(), diet.getDietTypes().stream().map(DietTypeMapper::mapDietTypeToDto).toList());
+    }
+
+    public static Diet mapUpdateDtoToDiet(UpdateDietDto dietDto, User user) {
+        Diet diet = new Diet();
+        diet.setId(dietDto.getId());
+        diet.setName(dietDto.getName());
+        diet.setMinCalories(dietDto.getMinCalories());
+        diet.setMaxCalories(dietDto.getMaxCalories());
+        diet.setDietTypes(dietDto.getDietTypes().stream().map(DietTypeMapper::mapDtoToDietType).toList());
+        diet.setUser(user);
+        return diet;
     }
 }

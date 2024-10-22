@@ -1,8 +1,6 @@
 package com.example.api.dtos.DietDtos;
 
 import com.example.api.dtos.EntityDtos.DietTypeDto;
-import com.example.api.entities.DietType;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +13,11 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateDietRequest {
-    @NotBlank(message = "Name is required")
+public class UpdateDietDto {
+    @NotNull(message = "Id is required")
+    private Long id;
     private String name;
-
     private Integer minCalories;
     private Integer maxCalories;
-
     private List<DietTypeDto> dietTypes;
 }

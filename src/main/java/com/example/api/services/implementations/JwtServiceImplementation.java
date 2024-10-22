@@ -21,11 +21,22 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImplementation implements JwtService {
 
-    @Value("${security.jwt.secret}")
-    private String secret;
+    private final String secret;
+    private final long expiration;
 
-    @Value("${security.jwt.expiration}")
-    private long expiration;
+    public JwtServiceImplementation(@Value("${security.jwt.secret}") String secret,
+                                    @Value("${security.jwt.expiration}") long expiration) {
+        this.secret = secret;
+        this.expiration = expiration;
+
+        // Optional: Validate the secret and expiration
+        if (secret == null || secret.isEmpty()) {
+            throw new IllegalArgumentException("JWT secret must not be null or empty");
+        }
+        if (expiration <= 0) {
+            throw new IllegalArgumentException("JWT expiration must be greater than 0");
+        }
+    }
 
     @Override
     public String ExtractUserId(String token) {

@@ -17,12 +17,28 @@ public class DietMapper {
         diet.setName(dietDto.getName());
         diet.setMinCalories(dietDto.getMinCalories());
         diet.setMaxCalories(dietDto.getMaxCalories());
-        diet.setDietTypes(dietDto.getDietTypes().stream().map(DietTypeMapper::mapDtoToDietType).toList());
+        diet.setDietTypes(
+                dietDto.getDietTypes() != null
+                        ? dietDto.getDietTypes().stream()
+                        .map(DietTypeMapper::mapDtoToDietType)
+                        .toList()
+                        : null
+        );
         return diet;
     }
 
     public static DietDto mapDietToDto(Diet diet) {
-        return new DietDto(diet.getId(), diet.getName(), diet.getMinCalories(), diet.getMaxCalories(), diet.getDietTypes().stream().map(DietTypeMapper::mapDietTypeToDto).toList());
+        return new
+                DietDto(diet.getId(),
+                diet.getName(),
+                diet.getMinCalories(),
+                diet.getMaxCalories(),
+                diet.getDietTypes() != null
+                        ? diet.getDietTypes().stream()
+                        .map(DietTypeMapper::mapDietTypeToDto)
+                        .toList()
+                        : null
+        );
     }
 
     public static Diet mapUpdateDtoToDiet(UpdateDietDto dietDto, User user) {
@@ -31,7 +47,14 @@ public class DietMapper {
         diet.setName(dietDto.getName());
         diet.setMinCalories(dietDto.getMinCalories());
         diet.setMaxCalories(dietDto.getMaxCalories());
-        diet.setDietTypes(dietDto.getDietTypes().stream().map(DietTypeMapper::mapDtoToDietType).toList());
+        diet.setDietTypes(
+                dietDto.getDietTypes() != null
+                        ? dietDto.getDietTypes().stream()
+                        .map(DietTypeMapper::mapDtoToDietType)
+                        .toList()
+                        : null
+        );
+
         diet.setUser(user);
         return diet;
     }

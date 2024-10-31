@@ -61,7 +61,7 @@ public class DietController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{dietId}")
+    @PatchMapping("/{dietId}")
     public ResponseEntity<DietDto> updateDiet(@PathVariable Long dietId, @RequestBody UpdateDietDto updateDietDto, HttpServletRequest request) {
 
         String token = request.getHeader("Authorization");
@@ -79,11 +79,11 @@ public class DietController {
             user = null;
         }
 
+        updateDietDto.setId(dietId);
+
         Diet diet = DietMapper.mapUpdateDtoToDiet(updateDietDto, user);
 
-        dietService.UpdateDiet(diet);
-
-        return ResponseEntity.ok(DietMapper.mapDietToDto(diet));
+        return ResponseEntity.ok(DietMapper.mapDietToDto(dietService.UpdateDiet(diet)));
     }
 
     @GetMapping("/types")

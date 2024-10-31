@@ -26,10 +26,11 @@ public class PantryController {
     private final PantryInvitationService pantryInvitationService;
     private final JwtService jwtService;
 
-    @GetMapping("{token}")
-    public ResponseEntity<List<PantryDto>> getPantry(@PathVariable("token") String token) {
+    @GetMapping()
+    public ResponseEntity<List<PantryDto>> getPantry(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+        Long userId = Long.parseLong(jwtService.ExtractUserId(jwtToken));
 
-        Long userId = Long.parseLong(jwtService.ExtractUserId(token));
         return ResponseEntity.ok(pantryService.getPantry(userId));
     }
 
@@ -67,8 +68,4 @@ public class PantryController {
         PantryDto pantry = pantryService.getPantryById(pantryId);
         return ResponseEntity.ok(pantry);
     }
-
-
-
-
 }

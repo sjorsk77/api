@@ -45,9 +45,11 @@ public class DietController {
         return ResponseEntity.ok(dietService.addDiet(diet));
     }
 
-    @GetMapping("/{token}")
-    public ResponseEntity<List<DietDto>> getDiet(@PathVariable("token") String Token) {
-        Long userId = Long.parseLong(jwtService.ExtractUserId(Token));
+    @GetMapping()
+    public ResponseEntity<List<DietDto>> getDiet(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+
+        Long userId = Long.parseLong(jwtService.ExtractUserId(jwtToken));
         List<Diet> diets = dietService.GetAllDietsByUserId(userId);
 
         List<DietDto> dietsToDto = diets.stream().map(DietMapper::mapDietToDto).toList();
